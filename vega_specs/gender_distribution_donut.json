@@ -4,7 +4,7 @@
   "width": 440,
   "height": 460,
   "background": "#0f0f12",
-  "data": { "url": "/data/gender_distribution.csv" },
+  "data": { "url": "data/gender_distribution.csv" },
   "transform": [
     { "filter": "datum.count > 0" },
     { "window": [{ "op": "sum", "field": "count", "as": "Total" }] },
