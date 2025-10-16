@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anime for Malaysians — FIT3179 DV2</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Anime for Malaysians</h1>
+      <span class="badge">FIT3179 · Vega-Lite</span>
+    </div>
+
+    <p>
+      Introducing anime to the average Malaysian: what it is, how it grew, what genres we love,
+      and how our tastes compare globally. (Prototype)
+    </p>
+
+    <div class="panels">
+      <section class="panel">
+        <header>
+          <div class="title">Most Watched Anime of All Time</div>
+          <small class="muted">Lollipop · source: MyAnimeList (members)</small>
+        </header>
+        <div id="lollipop"></div>
+      </section>
+
+      <section class="panel">
+        <header>
+          <div class="title">Viewer Gender Distribution</div>
+          <small class="muted">Donut · source: MAL Users</small>
+        </header>
+        <div id="gender"></div>
+      </section>
+    </div>
+
+    <footer>
+      <hr/>
+      <div>
+        Data sources: MyAnimeList (Kaggle). Built with Vega-Lite.
+        Author: <strong>Syed Asad Ali Shah</strong>.
+        <small class="muted">Specs in <code>/vega_specs</code>. Data in <code>/data</code>.</small>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    vegaEmbed("#lollipop", "vega_specs/top_anime_lollipop.json",
+      { actions: { export: true, source: true, compiled: true, editor: true }});
+    vegaEmbed("#gender", "vega_specs/gender_distribution_donut.json",
+      { actions: { export: true, source: true, compiled: true, editor: true }});
+  </script>
+</body>
+</html>

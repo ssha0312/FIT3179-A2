@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gender distribution",
+  "width": 440,
+  "height": 460,
+  "background": "#0f0f12",
+  "data": { "url": "/data/gender_distribution.csv" },
+  "transform": [
+    { "filter": "datum.count > 0" },
+    { "window": [{ "op": "sum", "field": "count", "as": "Total" }] },
+    { "calculate": "datum.count / datum.Total", "as": "pct" }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "arc", "innerRadius": 120, "stroke": "#0f0f12" },
+      "encoding": {
+        "theta": { "field": "count", "type": "quantitative" },
+        "color": {
+          "field": "gender", "type": "nominal",
+          "scale": { "scheme": "reds" },
+          "legend": { "labelColor": "#e5e7eb", "title": "Gender", "titleColor": "#e5e7eb" }
+        },
+        "tooltip": [
+          { "field": "gender", "type": "nominal" },
+          { "field": "count", "type": "quantitative", "format": "," },
+          { "field": "pct", "type": "quantitative", "title": "Percent", "format": ".1%" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "fontSize": 18, "color": "#e5e7eb" },
+      "encoding": {
+        "text": {
+          "aggregate": "sum", "field": "count",
+          "type": "quantitative", "format": ",", "title": "Total"
+        }
+      }
+    }
+  ],
+  "config": { "view": { "stroke": "transparent" } }
+}

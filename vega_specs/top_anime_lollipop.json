@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Lollipop chart of most-watched anime using MAL members as a proxy.",
+  "width": 620,
+  "height": 460,
+  "background": "#0f0f12",
+  "data": { "url": "/data/top_anime.csv" },
+  "transform": [
+    { "sort": [{ "field": "watch_count", "order": "descending" }] }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "rule", "strokeWidth": 2, "color": "#b71c1c" },
+      "encoding": {
+        "y": {
+          "field": "title", "type": "ordinal",
+          "sort": "-x",
+          "axis": { "labelColor": "#e5e7eb", "title": null }
+        },
+        "x": { "value": 0 },
+        "x2": {
+          "field": "watch_count", "type": "quantitative",
+          "axis": { "labelColor": "#e5e7eb" }
+        }
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 120, "color": "#ef4444" },
+      "encoding": {
+        "y": { "field": "title", "type": "ordinal", "sort": "-x", "axis": null },
+        "x": {
+          "field": "watch_count", "type": "quantitative",
+          "title": "Watch Count (MAL members)",
+          "axis": { "labelColor": "#e5e7eb", "titleColor": "#e5e7eb" }
+        },
+        "tooltip": [
+          { "field": "title", "type": "nominal", "title": "Anime" },
+          { "field": "watch_count", "type": "quantitative", "title": "Members", "format": "," }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "axis": { "labelColor": "#e5e7eb", "titleColor": "#e5e7eb" },
+    "view": { "stroke": "transparent" }
+  }
+}
