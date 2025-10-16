@@ -18,14 +18,13 @@
     </div>
 
     <p>
-      Introducing anime to the average Malaysian: what it is, how it grew, what genres are most popular,
-      and how it is established globally. (Prototype)
+      Introducing anime to the average Malaysian: what it is, how it grew, what genres we love,
+      and how our tastes compare globally. (Prototype)
     </p>
 
-    <div class="panels">
       <section class="panel">
         <header>
-          <div class="title">Most Watched Anime of All Time</div>
+          <div class="title">Most Popular Anime</div>
           <small class="muted">Lollipop · source: MyAnimeList (members)</small>
         </header>
         <div id="lollipop"></div>
@@ -51,8 +50,8 @@
   </div>
 
   <script>
-    vegaEmbed("#lollipop", "vega_specs/top_anime_lollipop.json",
-      { actions: { export: true, source: true, compiled: true, editor: true }});
+    vegaEmbed("#lollipop", "vega_specs/top_anime_lollipop_simple.json",
+      { actions: { export: true, source: true, compiled: true, editor: true } });
     vegaEmbed("#gender", "vega_specs/gender_distribution_donut.json",
       { actions: { export: true, source: true, compiled: true, editor: true }});
   </script>
