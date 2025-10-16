@@ -4,7 +4,7 @@
   "width": 620,
   "height": 460,
   "background": "#0f0f12",
-  "data": { "url": "/data/top_anime.csv" },
+  "data": { "url": "data/top_anime.csv" },
   "transform": [
     { "sort": [{ "field": "watch_count", "order": "descending" }] }
   ],
