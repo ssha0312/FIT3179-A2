@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "#0f0f12",
+  "title": {
+    "text": "Most Popular Anime (by MAL Members)",
+    "color": "#e5e7eb",
+    "subtitle": "Source: MyAnimeList (members as popularity proxy) · Hover for details",
+    "subtitleColor": "#9ca3af",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12
+  },
+  "width": 660,
+  "height": 520,
+  "data": {
+    "url": "data/top_anime.csv",
+    "format": { "type": "csv", "parse": { "watch_count": "number" } }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rule", "stroke": "#b91c1c", "strokeWidth": 2 },
+      "encoding": {
+        "y": {
+          "field": "title", "type": "ordinal",
+          "sort": "-x",
+          "axis": { "title": null, "labelColor": "#e5e7eb" }
+        },
+        "x": { "value": 0 },
+        "x2": { "field": "watch_count", "type": "quantitative" }
+      }
+    },
+    {
+      "mark": { "type": "circle", "color": "#ef4444", "size": 130 },
+      "encoding": {
+        "y": { "field": "title", "type": "ordinal", "sort": "-x", "axis": null },
+        "x": {
+          "field": "watch_count", "type": "quantitative",
+          "title": "Members",
+          "axis": { "labelColor": "#e5e7eb", "titleColor": "#e5e7eb" }
+        },
+        "tooltip": [
+          { "field": "title", "type": "nominal", "title": "Anime" },
+          { "field": "watch_count", "type": "quantitative", "title": "Members", "format": "," }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "dx": 6, "fontSize": 11, "color": "#e5e7eb" },
+      "encoding": {
+        "y": { "field": "title", "type": "ordinal", "sort": "-x" },
+        "x": { "field": "watch_count", "type": "quantitative" },
+        "text": { "field": "watch_count", "type": "quantitative", "format": "," }
+      }
+    }
+  ],
+  "config": { "view": { "stroke": "transparent" } }
+}
