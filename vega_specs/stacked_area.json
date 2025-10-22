@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Anime Releases Over Time (by Type)", "color": "#e5e7eb"},
+  "background": "#0b0f14",
+  "width": "container",
+  "height": 380,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ssha0312/FIT3179-A2/refs/heads/main/data/anime_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"filter": "isValid(datum.type) && trim(datum.type) != ''"},
+    {"calculate": "toNumber(datum.aired_from_year)", "as": "year_num"},
+    {"filter": "isFinite(datum.year_num) && datum.year_num >= 1960 && datum.year_num <= 2030"}
+  ],
+  "mark": {"type": "area"},
+  "encoding": {
+    "x": {
+      "field": "year_num",
+      "type": "quantitative",
+      "axis": {"title": "Year", "labelColor": "#cbd5e1", "grid": true, "format": "d"}
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative",
+      "axis": {"title": "No. of Anime", "labelColor": "#cbd5e1"}
+    },
+    "color": {
+      "field": "type",
+      "type": "nominal",
+      "legend": {"orient": "bottom", "labelColor": "#cbd5e1", "title": "Type"}
+    },
+    "tooltip": [
+      {"field": "year_num", "title": "Year"},
+      {"aggregate": "count", "title": "Anime"},
+      {"field": "type", "title": "Type"}
+    ]
+  },
+  "config": {"view": {"stroke": null}}
+}

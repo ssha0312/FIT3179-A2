@@ -1,0 +1,90 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 650,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "projection": { "type": "equirectangular" },
+
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/ne_110m_admin_0_countries.topojson",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+      "mark": { "type": "geoshape", "fill": "#efefef", "stroke": "white", "strokeWidth": 0.6 }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+        "format": { "type": "topojson", "feature": "oceans" }
+      },
+      "mark": { "type": "geoshape", "fill": "aliceblue" }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/WorldMapWithGraticules.topojson",
+        "format": { "type": "topojson", "feature": "ne_110m_graticules_30" }
+      },
+      "mark": { "type": "geoshape", "fill": null, "stroke": "#d1d5db" }
+    },
+
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ssha0312/FIT3179-A2/refs/heads/main/data/country_users.csv",
+        "format": { "type": "csv" }
+      },
+      "transform": [
+        { "calculate": "lower(datum.country)", "as": "country_lc" },
+        {
+          "calculate": "datum.country_lc=='united states'||datum.country_lc=='usa'||datum.country_lc=='u.s.a.'||datum.country_lc=='us' ? 'United States of America' : datum.country_lc=='russia' ? 'Russian Federation' : datum.country_lc=='south korea' ? 'Korea, Republic of' : datum.country_lc=='north korea' ? \"Korea, Democratic People's Republic of\" : datum.country_lc=='vietnam' ? 'Viet Nam' : datum.country_lc=='czech republic' ? 'Czechia' : (length(datum.country)>0 ? datum.country : '')",
+          "as": "country_norm"
+        },
+        {
+          "lookup": "country_norm",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/ne_110m_admin_0_countries.topojson",
+              "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+            },
+            "key": "properties.NAME"
+          },
+          "as": "geo"
+        },
+        { "filter": "datum.geo != null" },
+        { "calculate": "toNumber(datum.users)", "as": "users_num" }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#51505e", "strokeWidth": 0.35 },
+      "encoding": {
+        "shape": { "field": "geo", "type": "geojson" },
+        "color": {
+          "field": "users_num",
+          "type": "quantitative",
+          "title": "Users",
+          "scale": {
+            "type": "threshold",
+            "domain": [5, 100, 500, 1000, 5000, 10000],
+            "range": ["#ffffe5", "#fff7bc", "#fee391", "#fdd067", "#addd8e", "#78c679", "#31a354"]
+          }
+        },
+        "tooltip": [
+          { "field": "country_norm", "title": "Country" },
+          { "field": "users_num", "title": "Users", "format": "," }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/ne_110m_admin_0_countries.topojson",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+      "transform": [{ "filter": "datum.properties.NAME == 'Malaysia'" }],
+      "mark": { "type": "geoshape", "fill": null, "stroke": "#e86673", "strokeWidth": 1.2 }
+    }
+  ],
+
+  "config": {
+    "view": { "stroke": null },
+    "legend": { "orient": "bottom", "titleFontSize": 12, "labelFontSize": 11 }
+  }
+}

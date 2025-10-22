@@ -1,0 +1,98 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Are Popular Anime Better Rated?",
+    "subtitle": "MyAnimeList - popularity (members) vs. rating (score)"
+  },
+  "width": 700,
+  "height": 460,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ssha0312/FIT3179-A2/refs/heads/main/data/anime_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"calculate": "toNumber(datum.score)", "as": "score_num"},
+    {"calculate": "toNumber(datum.members)", "as": "members_num"},
+    {
+      "filter": "isValid(datum.score_num) && isFinite(datum.score_num) && isValid(datum.members_num) && datum.members_num > 0"
+    },
+    {
+      "filter": "indexof(lower(datum.genres ? datum.genres : (datum.genre ? datum.genre : '')), 'hentai') < 0"
+    },
+    {"calculate": "datum.members_num", "as": "members_capped"},
+    {"calculate": "log(datum.members_capped)/log(10)", "as": "log10_members"},
+    {"calculate": "(datum.title || datum.name || '')", "as": "title_clean"},
+    {"calculate": "(datum.type || '')", "as": "type_clean"},
+    {
+      "calculate": "datum.genres ? split(datum.genres, ',')[0] : (datum.genre ? split(datum.genre, ',')[0] : '')",
+      "as": "primary_genre"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "point", "filled": true, "opacity": 0.25},
+      "encoding": {
+        "x": {
+          "field": "members_capped",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "axis": {"title": "Popularity (Members, log scale)"}
+        },
+        "y": {
+          "field": "score_num",
+          "type": "quantitative",
+          "scale": {"domain": [0, 10]},
+          "axis": {"title": "Rating (Score)"}
+        },
+        "color": {"field": "type_clean", "type": "nominal", "title": "Type"},
+        "tooltip": [
+          {"field": "title_clean", "title": "Title"},
+          {"field": "primary_genre", "title": "Primary Genre"},
+          {"field": "type_clean", "title": "Type"},
+          {"field": "score_num", "title": "Score", "format": ".2f"},
+          {"field": "members_num", "title": "Members", "format": ",.0f"},
+          {"field": "log10_members", "title": "log10(Members)", "format": ".2f"}
+        ]
+      },
+      "params": [
+        {
+          "name": "typeFilter",
+          "select": {"type": "point", "fields": ["type_clean"]},
+          "bind": "legend"
+        }
+      ]
+    },
+    {
+      "transform": [
+        {"filter": {"param": "typeFilter"}},
+        {
+          "regression": "score_num",
+          "on": "members_capped",
+          "method": "linear",
+          "params": true,
+          "as": ["members_capped", "score_pred"]
+        }
+      ],
+      "mark": {"type": "line", "strokeWidth": 2},
+      "encoding": {
+        "x": {
+          "field": "members_capped",
+          "type": "quantitative",
+          "scale": {"type": "log"},
+          "axis": {"title": "Popularity (Members, log scale)"}
+        },
+        "y": {"field": "score_pred", "type": "quantitative"},
+        "tooltip": [
+          {"field": "slope", "type": "quantitative", "title": "Slope", "format": ".4f"},
+          {"field": "intercept", "type": "quantitative", "title": "Intercept", "format": ".3f"},
+          {"field": "rSquared", "type": "quantitative", "title": "R²", "format": ".3f"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "legend": {"orient": "bottom"},
+    "axis": {"grid": true},
+    "view": {"stroke": null}
+  }
+}

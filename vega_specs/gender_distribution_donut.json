@@ -1,41 +1,86 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Gender distribution",
-  "width": 440,
-  "height": 460,
-  "background": "#0f0f12",
-  "data": { "url": "data/gender_distribution.csv" },
+  "title": {
+    "text": "Gender Distribution of MyAnimeList Users",
+    "subtitle": "Source: users_cleaned.csv",
+    "color": "#e5e7eb"
+  },
+  "background": "#0b0f14",
+  "width": 420,
+  "height": 420,
+
+  "data": {
+    "url": "https://raw.githubusercontent.com/ssha0312/FIT3179-A2/refs/heads/main/data/users_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+
   "transform": [
-    { "filter": "datum.count > 0" },
-    { "window": [{ "op": "sum", "field": "count", "as": "Total" }] },
-    { "calculate": "datum.count / datum.Total", "as": "pct" }
+    {"filter": "isValid(datum.gender) && trim(datum.gender) != ''"},
+    {"aggregate": [{"op": "count", "as": "user_count"}], "groupby": ["gender"]},
+    {"joinaggregate": [{"op": "sum", "field": "user_count", "as": "total_users"}]},
+    {"calculate": "datum.user_count / datum.total_users", "as": "share"},
+    {"filter": "datum.user_count > 0"},
+    {"calculate": "lower(trim(datum.gender))", "as": "gender_lc"},
+    {
+      "calculate": "datum.gender_lc == 'male' ? 'Male' : (datum.gender_lc == 'female' ? 'Female' : (datum.gender_lc == 'non-binary' || datum.gender_lc == 'nonbinary' ? 'Non-binary' : (datum.gender_lc == 'other' ? 'Other' : datum.gender)))",
+      "as": "gender_clean"
+    }
   ],
+
   "layer": [
     {
-      "mark": { "type": "arc", "innerRadius": 120, "stroke": "#0f0f12" },
+      "mark": {"type": "arc", "innerRadius": 95, "stroke": "#0b0f14", "strokeWidth": 2},
       "encoding": {
-        "theta": { "field": "count", "type": "quantitative" },
+        "theta": {"field": "user_count", "type": "quantitative"},
+        "order": {"field": "user_count", "type": "quantitative", "sort": "descending"},
         "color": {
-          "field": "gender", "type": "nominal",
-          "scale": { "scheme": "reds" },
-          "legend": { "labelColor": "#e5e7eb", "title": "Gender", "titleColor": "#e5e7eb" }
+          "field": "gender_clean",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Female","Male","Non-binary"],
+            "range":   ["#f472b6","#60a5fa","#34d399"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelColor": "#d1d5db",
+            "title": "Gender",
+            "titleColor": "#e5e7eb"
+          }
         },
         "tooltip": [
-          { "field": "gender", "type": "nominal" },
-          { "field": "count", "type": "quantitative", "format": "," },
-          { "field": "pct", "type": "quantitative", "title": "Percent", "format": ".1%" }
+          {"field": "gender_clean", "title": "Gender"},
+          {"field": "user_count", "title": "Users", "format": ","},
+          {"field": "share", "title": "Share", "format": ".1%"}
         ]
       }
     },
+
     {
-      "mark": { "type": "text", "fontSize": 18, "color": "#e5e7eb" },
+      "transform": [
+        {"aggregate": [{"op": "max", "field": "total_users", "as": "total_users"}]}
+      ],
+      "mark": {"type": "text", "fontSize": 22, "fontWeight": "bold", "color": "#e5e7eb"},
       "encoding": {
-        "text": {
-          "aggregate": "sum", "field": "count",
-          "type": "quantitative", "format": ",", "title": "Total"
-        }
+        "x": {"value": 210},
+        "y": {"value": 205},
+        "text": {"field": "total_users", "type": "quantitative", "format": ","}
+      }
+    },
+    {
+      "transform": [
+        {"aggregate": [{"op": "max", "field": "total_users", "as": "total_users"}]}
+      ],
+      "mark": {"type": "text", "fontSize": 12, "color": "#9ca3af"},
+      "encoding": {
+        "x": {"value": 210},
+        "y": {"value": 225},
+        "text": {"value": "Total users"}
       }
     }
   ],
-  "config": { "view": { "stroke": "transparent" } }
+
+  "config": {
+    "view": {"stroke": null},
+    "style": {"guide-label": {"fontSize": 12}, "guide-title": {"fontSize": 12}}
+  }
 }

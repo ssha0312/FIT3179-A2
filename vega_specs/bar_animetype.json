@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {"text": "Anime by Type (Top 10)", "color": "#e5e7eb"},
+  "background": "#0b0f14",
+  "width": 560,
+  "height": 320,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ssha0312/FIT3179-A2/refs/heads/main/data/anime_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"filter": "isValid(datum.type) && trim(datum.type) != '' && datum.type != 'Unknown'"},
+    {"aggregate": [{"op": "count", "as": "n"}], "groupby": ["type"]},
+    {"window": [{"op": "rank", "as": "r"}], "sort": [{"field": "n", "order": "descending"}]},
+    {"filter": "datum.r <= 10"}
+  ],
+  "mark": {"type": "bar", "cornerRadiusEnd": 3},
+  "encoding": {
+    "y": {
+      "field": "type",
+      "type": "nominal",
+      "sort": {"field": "n", "order": "descending"},
+      "axis": {"title": null, "labelColor": "#cbd5e1"}
+    },
+    "x": {
+      "field": "n",
+      "type": "quantitative",
+      "axis": {"title": "Number of Anime", "labelColor": "#cbd5e1", "grid": true}
+    },
+    "color": {
+      "field": "type",
+      "type": "nominal",
+      "legend": {"orient": "bottom", "labelColor": "#cbd5e1", "title": null}
+    },
+    "tooltip": [
+      {"field": "type", "title": "Type"},
+      {"field": "n", "title": "Anime", "format": ","}
+    ]
+  },
+  "config": {"view": {"stroke": null}}
+}
