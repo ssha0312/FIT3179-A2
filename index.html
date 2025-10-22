@@ -29,9 +29,9 @@
     <!-- 1) Map -->
     <section class="section section--map map-centered">
       <div class="stacked">
-        <h2>Global coverage</h2>
+        <h2>Global Map of MyAnimeList users</h2>
         <div class="vis vis--map" id="map"></div>
-        <p class="copy intro-wide">Even from just one platform - MyAnimeList - millions track what they watch. We can notice strong communities in the United States, Southeast Asia, and Europe. Japan looks modest here not because anime is unpopular, but because locals often use domestic services (e.g., broadcasters, streaming sites) rather than MAL. Likewise, some countries appear lighter due to internet access, language, or platform preference. Even though this is just from MAL, we can see that, at the very least, Anime is known all around the world.</p>
+        <p class="copy intro-wide">Even from just one platform - MyAnimeList - millions track what they watch all over the world. We can notice strong communities in the United States, Southeast Asia, and Europe. Japan looks modest here not because anime is unpopular, but because locals often use domestic services (e.g., broadcasters, streaming sites) rather than MAL. Likewise, some countries appear lighter due to internet access, language, or platform preference. Even though this is just from MAL, we can see that, at the very least, Anime is known all around the world.</p>
         <p class="caption small">Tip: Malaysia is highlighted. Hover over a country for details</p>
       </div>
     </section>
@@ -50,19 +50,20 @@
     <section class="section">
       <div class="stacked">
         <h2>Who watches anime?</h2>
-        <p class="copy">Anime spans genres from action to slice-of-life. On MAL, both Male & Female participation is noted in large quantities, and non-binary/other users are represented too. This makes sense, since it's mainstream entertainment - more like "TV & film" than a niche subculture. It isn't weird or just for one specific group of people, its diverse, with something for everyone.</p>
-        <p class="caption small">Total Counts shown in the center; filtered participants from MAL.</p>
+        <p class="copy">Anime spans genres from action to slice-of-life. On MAL, both Male & Female participation is noted in large quantities, and non-binary/other users are represented too.</p>
+        <p class="copy">This makes sense, since it's mainstream entertainment - more like "TV & film" than a niche subculture. It isn't weird or just for one specific group of people, it's diverse, with something for everyone.</p>
+        <p class="caption small">Tip: Total Counts shown in the center; filtered participants from MAL.</p>
       </div>
-      <div class="vis" id="donut"></div>
+      <div class="vis vis--donut" id="donut"></div>
     </section>
 
-    <!-- 4) Bar + Genre dropdown -->
-    <section class="section alt">
-      <div class="vis" id="bar-type"></div>
+<!-- 4) Genre chart  -->
+    <section class="section section--genres map-centered">
       <div class="stacked">
         <h2>Formats & Genres</h2>
-        <p class="copy">"Anime" isn't one thing, its format or style: like LiveAction. TV series dominate, but there are movies, OVAs, ONAs, specials, and music videos. Pair that with genres - from Comedy and Romance to Mecha, Mystery, and more - and you get something for any and everyone, paired with any mood. Its not just childrens shows, in fact, a good portion is catered to teens and adults, filled with mature themes ranging from war to mental illness and even mild, yet popular themes like romance and adventure.</p>
         <div class="vis" id="genres-by-type"></div>
+        <p class="copy">"Anime" isn't one thing, its a format or style: like LiveAction. TV series dominate, but there are movies, OVAs, ONAs, specials, and music videos.</p>
+        <p class="copy">Pair that with genres - from Comedy and Romance to Mecha, Mystery, and more - and you get something for any and everyone, paired with any mood. It's not just childrens shows; in fact, a good portion is catered to teens and adults, filled with mature themes ranging from war to mental illness and even mild, yet popular themes like romance and adventure.</p>
         <p class="caption small">Use the dropdown to explore genres within a format.</p>
       </div>
     </section>
@@ -82,40 +83,44 @@
       <div class="vis" id="scatter"></div>
       <div class="stacked">
         <h2>What to pick: Critically acclaimed or Most popular?</h2>
-        <p class="copy">From the scatterplot, its easy to see that in general - shows with higher ratings are often more popular. There are exceptions to this rule ofcourse, but generally, a healthy popularity and quality plus word-of-mouth helps beginners land a hit. Its nice to pick something that is popular and highly rated, so you can enjoy it and have plenty of people to talk about it with.</p>
+        <p class="copy">From the scatterplot, its easy to see that in general - shows with higher ratings are often more popular. There are exceptions to this rule ofcourse, but generally, a healthy popularity and quality plus word-of-mouth helps beginners land a hit.</p>
+        <p class="copy">Its nice to pick something that is popular and highly rated, so you can enjoy it and have plenty of people to talk about it with.</p>
         <p class="caption small">Hover over any points to see the title, primary genre, type, score & members. Pick a show to watch!</p>
       </div>
     </section>
 
-    <!-- Sources -->
+    <!-- 7) Sources -->
     <section class="meta">
       <h3>About this page</h3>
       <p class="copy">Author: <em>Syed Asad Ali Shah, Student ID: 34726918</em></p>
       <p class="copy small">Note: MAL represents platform users, not total anime viewership; some regions prefer other services or have limited access—so map intensity ≠ all viewers.</p>
+      <p class="copy small">Sources: 
+        <a href="https://www.kaggle.com/datasets/azathoth42/myanimelist?select=users_cleaned.csv" target="_blank">users_cleaned.csv</a> 
+        and 
+        <a href="https://www.kaggle.com/datasets/azathoth42/myanimelist?select=anime_cleaned.csv" target="_blank">anime_cleaned.csv</a>
+      </p>
     </section>
   </div>
 
-  <script>
-    const SPECS = {
-      map:            "vega_specs/map.json",
-      lollipop:       "vega_specs/top_anime_lollipop_simple.json",
-      donut:          "vega_specs/gender_distribution_donut.json",
-      barType:        "vega_specs/bar_animetype.json",
-      genresByType:   "vega_specs/bar_genre.json",
-      stackedArea:    "vega_specs/stacked_area.json",
-      scatter:        "vega_specs/scatterplot.json"
-    };
+<script>
+  const SPECS = {
+    map:            "vega_specs/map.json",
+    lollipop:       "vega_specs/top_anime_lollipop_simple.json",
+    donut:          "vega_specs/gender_distribution_donut.json",
+    genresByType:   "vega_specs/bar_genre.json",
+    stackedArea:    "vega_specs/stacked_area.json",
+    scatter:        "vega_specs/scatterplot.json"
+  };
 
-    const opts = { actions:false, config:{ view:{ stroke:null } } };
-    function embed(id, url){ return vegaEmbed(id, url, opts).catch(err => console.error("Embed failed", id, err)); }
+  const opts = { actions:false, config:{ view:{ stroke:null } } };
+  function embed(id, url){ return vegaEmbed(id, url, opts).catch(err => console.error("Embed failed", id, err)); }
 
-    embed("#map", SPECS.map);
-    embed("#lollipop", SPECS.lollipop);
-    embed("#donut", SPECS.donut);
-    embed("#bar-type", SPECS.barType);
-    embed("#genres-by-type", SPECS.genresByType);
-    embed("#stacked-area", SPECS.stackedArea);
-    embed("#scatter", SPECS.scatter);
-  </script>
+  embed("#map", SPECS.map);
+  embed("#lollipop", SPECS.lollipop);
+  embed("#donut", SPECS.donut);
+  embed("#genres-by-type", SPECS.genresByType);
+  embed("#stacked-area", SPECS.stackedArea);
+  embed("#scatter", SPECS.scatter);
+</script>
 </body>
 </html>
