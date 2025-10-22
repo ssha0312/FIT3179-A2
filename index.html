@@ -1,59 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Anime for Malaysians — FIT3179 DV2</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Anime for Malaysians - MyAnimeList, explained</title>
+
+  <!-- Vega / Vega-Lite / vega-embed -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-  <link rel="stylesheet" href="assets/style.css" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800;900&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
-  <div class="wrapper">
-    <div class="header">
-      <h1>Anime for Malaysians</h1>
-      <span class="badge">FIT3179 · Vega-Lite</span>
-    </div>
+  <div class="page">
+    <header>
+      <div class="kicker">Explained with MyAnimeList</div>
+      <h1>Anime explained for Malaysians</h1>
+      <p class="lede intro-wide">We use MyAnimeList (a global anime database) to introduce anime to newcomers in Malaysia - what it is, who watches it, how it's grown, and how to pick a great first show.</p>
+    </header>
 
-    <p>
-      Introducing anime to the average Malaysian: what it is, how it grew, what genres we love,
-      and how our tastes compare globally. (Prototype)
-    </p>
-
-      <section class="panel">
-        <header>
-          <div class="title">Most Popular Anime</div>
-          <small class="muted">Lollipop · source: MyAnimeList (members)</small>
-        </header>
-        <div id="lollipop"></div>
-      </section>
-
-      <section class="panel">
-        <header>
-          <div class="title">Viewer Gender Distribution</div>
-          <small class="muted">Donut · source: MAL Users</small>
-        </header>
-        <div id="gender"></div>
-      </section>
-    </div>
-
-    <footer>
-      <hr/>
-      <div>
-        Data sources: MyAnimeList (Kaggle). Built with Vega-Lite.
-        Author: <strong>Syed Asad Ali Shah</strong>.
-        <small class="muted">Specs in <code>/vega_specs</code>. Data in <code>/data</code>.</small>
+    <!-- 1) Map -->
+    <section class="section section--map map-centered">
+      <div class="stacked">
+        <h2>Global coverage</h2>
+        <div class="vis vis--map" id="map"></div>
+        <p class="copy intro-wide">Even from just one platform - MyAnimeList - millions track what they watch. We can notice strong communities in the United States, Southeast Asia, and Europe. Japan looks modest here not because anime is unpopular, but because locals often use domestic services (e.g., broadcasters, streaming sites) rather than MAL. Likewise, some countries appear lighter due to internet access, language, or platform preference. Even though this is just from MAL, we can see that, at the very least, Anime is known all around the world.</p>
+        <p class="caption small">Tip: Malaysia is highlighted. Hover over a country for details</p>
       </div>
-    </footer>
+    </section>
+
+    <!-- 2) Lollipop -->
+    <section class="section alt">
+      <div class="vis" id="lollipop"></div>
+      <div class="stacked">
+        <h2>The most popular shows</h2>
+        <p class="copy">The most popular shows on MAL based on member count. From classics like Death Note or FMA: Brotherhood, to long running shonen like Naruto or Bleach and even odd standouts like No Game No Life, there are plenty diverse shows to pick from. Of course, popularity isn't everything, but it's a safe window into what you or your friends may have heard of, and are often good ways to get into Anime.</p>
+        <p class="caption small">Tip: hover for title + members.</p>
+      </div>
+    </section>
+
+    <!-- 3) Donut -->
+    <section class="section">
+      <div class="stacked">
+        <h2>Who watches anime?</h2>
+        <p class="copy">Anime spans genres from action to slice-of-life. On MAL, both Male & Female participation is noted in large quantities, and non-binary/other users are represented too. This makes sense, since it's mainstream entertainment - more like "TV & film" than a niche subculture. It isn't weird or just for one specific group of people, its diverse, with something for everyone.</p>
+        <p class="caption small">Total Counts shown in the center; filtered participants from MAL.</p>
+      </div>
+      <div class="vis" id="donut"></div>
+    </section>
+
+    <!-- 4) Bar + Genre dropdown -->
+    <section class="section alt">
+      <div class="vis" id="bar-type"></div>
+      <div class="stacked">
+        <h2>Formats & Genres</h2>
+        <p class="copy">"Anime" isn't one thing, its format or style: like LiveAction. TV series dominate, but there are movies, OVAs, ONAs, specials, and music videos. Pair that with genres - from Comedy and Romance to Mecha, Mystery, and more - and you get something for any and everyone, paired with any mood. Its not just childrens shows, in fact, a good portion is catered to teens and adults, filled with mature themes ranging from war to mental illness and even mild, yet popular themes like romance and adventure.</p>
+        <div class="vis" id="genres-by-type"></div>
+        <p class="caption small">Use the dropdown to explore genres within a format.</p>
+      </div>
+    </section>
+
+    <!-- 5) Stacked Area -->
+    <section class="section">
+      <div class="stacked">
+        <h2>Growth over the years</h2>
+        <p class="copy">Anime as a type of film has had production scaled dramatically after the 1990s. Seasonal TV output climbs, ONAs rise with streaming, and films/movies stay steady. As the years go by, and as Anime becomes more popular and mainsteam, more and more shows release with different themes, genres and stories. There is constant freshness for old viewers, and options for new comers. In any case, this format will continue to grow at a steady pace.</p>
+        <p class="caption small">Each layer counts titles per year within that format.</p>
+      </div>
+      <div class="vis" id="stacked-area"></div>
+    </section>
+
+    <!-- 6) Scatter -->
+    <section class="section alt">
+      <div class="vis" id="scatter"></div>
+      <div class="stacked">
+        <h2>What to pick: Critically acclaimed or Most popular?</h2>
+        <p class="copy">From the scatterplot, its easy to see that in general - shows with higher ratings are often more popular. There are exceptions to this rule ofcourse, but generally, a healthy popularity and quality plus word-of-mouth helps beginners land a hit. Its nice to pick something that is popular and highly rated, so you can enjoy it and have plenty of people to talk about it with.</p>
+        <p class="caption small">Hover over any points to see the title, primary genre, type, score & members. Pick a show to watch!</p>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="meta">
+      <h3>About this page</h3>
+      <p class="copy">Author: <em>Syed Asad Ali Shah, Student ID: 34726918</em></p>
+      <p class="copy small">Note: MAL represents platform users, not total anime viewership; some regions prefer other services or have limited access—so map intensity ≠ all viewers.</p>
+    </section>
   </div>
 
   <script>
-    vegaEmbed("#lollipop", "vega_specs/top_anime_lollipop_simple.json",
-      { actions: { export: true, source: true, compiled: true, editor: true } });
-    vegaEmbed("#gender", "vega_specs/gender_distribution_donut.json",
-      { actions: { export: true, source: true, compiled: true, editor: true }});
+    const SPECS = {
+      map:            "vega_specs/map.json",
+      lollipop:       "vega_specs/top_anime_lollipop_simple.json",
+      donut:          "vega_specs/gender_distribution_donut.json",
+      barType:        "vega_specs/bar_animetype.json",
+      genresByType:   "vega_specs/bar_genre.json",
+      stackedArea:    "vega_specs/stacked_area.json",
+      scatter:        "vega_specs/scatterplot.json"
+    };
+
+    const opts = { actions:false, config:{ view:{ stroke:null } } };
+    function embed(id, url){ return vegaEmbed(id, url, opts).catch(err => console.error("Embed failed", id, err)); }
+
+    embed("#map", SPECS.map);
+    embed("#lollipop", SPECS.lollipop);
+    embed("#donut", SPECS.donut);
+    embed("#bar-type", SPECS.barType);
+    embed("#genres-by-type", SPECS.genresByType);
+    embed("#stacked-area", SPECS.stackedArea);
+    embed("#scatter", SPECS.scatter);
   </script>
 </body>
 </html>
