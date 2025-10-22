@@ -97,5 +97,57 @@ header{
   padding:6px 10px;
 }
 
+/* Center map and genres text */
+.map-centered h2,
+.map-centered .copy,
+.section--genres h2,
+.section--genres .copy,
+.section--genres .caption {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 90ch;
+}
+
+/* donut */
+.vis--donut {
+  max-width: 480px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Tighter spacing for donut section */
+.section#donut, .section .vis--donut {
+  margin-bottom: 10px;
+  padding-bottom: 0;
+}
+
 .small{ font-size:.9rem; }
 .kicker{ color:#9fb6d7; text-transform:uppercase; letter-spacing:.12em; font-weight:700; font-size:.8rem; margin-bottom:.2rem; }
+
+/* --- Genres Section Centering --- */
+.section--genres {
+  grid-template-columns: 1fr; /* make it single-column like the map */
+}
+
+.section--genres h2,
+.section--genres .vis,
+.section--genres .copy,
+.section--genres .caption {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- under Map --- */
+.map-centered .caption {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* genre chart full width but still centered visually */
+.section--genres .vis {
+  width: 100%;
+  max-width: 1100px;
+}
